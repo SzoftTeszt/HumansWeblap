@@ -1,8 +1,22 @@
 console.log("helló")
 url="http://172.16.16.148:5000/api/Humans"
 console.log(url)
-data=[]
+var data=[]
 oszlopok=["name","age","address","job","hobby"]
+xhttp = new XMLHttpRequest()
+
+
+function getOnload(){
+    console.log(xhttp.responseText)
+    data=JSON.parse(xhttp.responseText)
+    render();
+}
+
+function deleteOnload(){
+    xhttp.open("get",url,true)
+    xhttp.onload = getOnload
+    xhttp.send()
+}
 
 function render(){
     container = document.getElementsByClassName("container")[0]
@@ -41,15 +55,24 @@ function render(){
         gomb.classList.add("btn")
         gomb.classList.add("btn-danger")
         gomb.innerHTML="Delete"
+        gomb.onclick=function() { deleteHuman(human.id)}
         cella.appendChild(gomb)
         sor.appendChild(cella)
 
         container.appendChild(sor)
     }
 }
+function deleteHuman(id){
+    console.log("delete",id)
+    xhttp.open("delete",url+"/"+id,true)
+    xhttp.setRequestHeader("Content-Type","application/json")
+    // xhttp.setRequestHeader("Accept","application/json")
+    xhttp.onload = deleteOnload
+    xhttp.send()
+}
 
 
-xhttp = new XMLHttpRequest()
+
 
 // xhttp.onreadystatechange = function(){
 //     if (xhttp.readyState==4 && xhttp.status==200){
@@ -57,11 +80,9 @@ xhttp = new XMLHttpRequest()
 //     }
 // }
 
-xhttp.onload = function(){
-    data=JSON.parse(xhttp.responseText)
-    render();
-}
+
 
 xhttp.open("get",url,true)
+xhttp.onload = getOnload
 // CRUD - post, get, update, delete 
 xhttp.send()
