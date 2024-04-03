@@ -17,17 +17,33 @@ function render(){
         cella.innerHTML=oszlop
         sor.appendChild(cella)
     }
+    cella = document.createElement('div')
+    cella.className="col"
+    cella.innerHTML="Actions"
+    sor.appendChild(cella)
+
     container.appendChild(sor)
     // fejléc vége
     for (const human of data) {
         sor = document.createElement('div')
         sor.className="row"
+        sor.classList.add("my-2")
         for (const oszlop of oszlopok) {
             cella = document.createElement('div')
             cella.className="col"
+
             cella.innerHTML=human[oszlop]
             sor.appendChild(cella)
         }
+        cella = document.createElement('div')
+        cella.className="col"
+        gomb = document.createElement("button")
+        gomb.classList.add("btn")
+        gomb.classList.add("btn-danger")
+        gomb.innerHTML="Delete"
+        cella.appendChild(gomb)
+        sor.appendChild(cella)
+
         container.appendChild(sor)
     }
 }
